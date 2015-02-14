@@ -63,7 +63,7 @@ public class FinestraClassificacions extends JFrame {
 		JMenuItem mntmNovaLliga = new JMenuItem("Nova Lliga");
 		mntmNovaLliga.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				finestraCrearLliga = new CrearLliga(controlador);
+				finestraCrearLliga = new CrearLliga(controlador, FinestraClassificacions.this);
 				finestraCrearLliga.setVisible(true);
 			}
 		});
@@ -99,6 +99,7 @@ public class FinestraClassificacions extends JFrame {
 		tableContainer.setLayout(new MigLayout("", "[404px]", "[152px]"));
 		
 		table = new JTable();
+		table.setModel(controlador.getEstadisticaEquipModel());
 		tableContainer.add(table, "cell 0 0,grow");
 		
 		JButton btnEntrarUnaNova = new JButton("Entrar una nova Jornada");
@@ -109,6 +110,18 @@ public class FinestraClassificacions extends JFrame {
 			}
 		});
 		contentPane.add(btnEntrarUnaNova, "cell 0 2");
+		controlador.generarCapsaleres(this);
+		
 	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public void setTable(JTable table) {
+		this.table = table;
+	}
+	
+	
 
 }

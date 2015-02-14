@@ -32,7 +32,7 @@ public class CrearLliga extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CrearLliga(final Controlador controlador) {
+	public CrearLliga(final Controlador controlador, final FinestraClassificacions finestraClassificacions) {
 		setLocationRelativeTo(null);
 		setTitle("Crear una lliga");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,6 +101,8 @@ public class CrearLliga extends JFrame {
 				
 				//Paso les dades al controlador.
 				controlador.setEquipsLliga(equipsLliga);
+				
+				
 				CrearLliga.this.setVisible(false);
 				}else{
 					System.out.println("No s'han especificat prous dades!");
