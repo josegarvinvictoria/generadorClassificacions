@@ -18,8 +18,8 @@ import javax.swing.SwingConstants;
 public class PartitNou extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField resultat1;
+	private JTextField resultat2;
 	private JButton btnAcceptar;
 	private JButton btnCancella;
 	private JLabel infoBox;
@@ -43,27 +43,29 @@ public class PartitNou extends JFrame {
 		final JComboBox<String> llistatEquips1 = new JComboBox<String>();
 		contentPane.add(llistatEquips1, "cell 1 1,growx");
 		
-		textField = new JTextField();
-		contentPane.add(textField, "cell 3 1,growx");
-		textField.setColumns(10);
+		resultat1 = new JTextField();
+		contentPane.add(resultat1, "cell 3 1,growx");
+		resultat1.setColumns(10);
 		
 		final JComboBox<String> llistatEquips2 = new JComboBox<String>();
 		contentPane.add(llistatEquips2, "cell 1 3,growx");
 		
-		textField_1 = new JTextField();
-		contentPane.add(textField_1, "cell 3 3,growx");
-		textField_1.setColumns(10);
+		resultat2 = new JTextField();
+		contentPane.add(resultat2, "cell 3 3,growx");
+		resultat2.setColumns(10);
 		
 		btnAcceptar = new JButton("Acceptar");
 		btnAcceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String equip1 = llistatEquips1.getSelectedItem().toString();
 				String equip2 = llistatEquips2.getSelectedItem().toString();
+				int resultatE1 = Integer.parseInt(resultat1.getText());
+				int resultatE2 = Integer.parseInt(resultat2.getText());
 				
 				if(equip1.equals(equip2)){
 					infoBox.setText("Revisa els equips escollits!");
 				}else{
-					
+					controlador.calcularPunts(equip1, resultatE1, equip2, resultatE2);
 				}
 				
 			}
