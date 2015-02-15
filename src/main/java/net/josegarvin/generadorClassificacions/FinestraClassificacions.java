@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 public class FinestraClassificacions extends JFrame {
 
@@ -24,11 +25,13 @@ public class FinestraClassificacions extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTable table;
+	
 	CrearLliga finestraCrearLliga;
 	PartitNou finestraPartitNou;
 	
 	Controlador controlador = new Controlador();
+	String nomLliga = controlador.obtenirNomLliga();
+	private JTable table;
 
 	 /**
 	   * Launch the application.
@@ -94,13 +97,16 @@ public class FinestraClassificacions extends JFrame {
 		contentPane.setLayout(new MigLayout("", "[426px]", "[229px][][][]"));
 		
 		JPanel tableContainer = new JPanel();
-		tableContainer.setBorder(new TitledBorder(null, "Nom de la lliga", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		tableContainer.setBorder(new TitledBorder(null, nomLliga, TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		contentPane.add(tableContainer, "cell 0 0,grow");
-		tableContainer.setLayout(new MigLayout("", "[404px]", "[152px]"));
+		tableContainer.setLayout(new MigLayout("", "[404px,grow]", "[152px,grow]"));
+		
+		JScrollPane scrollPane = new JScrollPane();
+		tableContainer.add(scrollPane, "cell 0 0,grow");
 		
 		table = new JTable();
 		table.setModel(controlador.getEstadisticaEquipModel());
-		tableContainer.add(table, "cell 0 0,grow");
+		scrollPane.setViewportView(table);
 		
 		JButton btnEntrarUnaNova = new JButton("Entrar una nova Jornada");
 		btnEntrarUnaNova.addActionListener(new ActionListener() {
@@ -110,17 +116,18 @@ public class FinestraClassificacions extends JFrame {
 			}
 		});
 		contentPane.add(btnEntrarUnaNova, "cell 0 2");
-		controlador.generarCapsaleres(this);
-		
+		controlador.generarCapsaleres();
 	}
 
-	public JTable getTable() {
-		return table;
+	public String getNomLliga() {
+		return nomLliga;
 	}
 
-	public void setTable(JTable table) {
-		this.table = table;
+	public void setNomLliga(String nomLliga) {
+		this.nomLliga = nomLliga;
 	}
+
+
 	
 	
 

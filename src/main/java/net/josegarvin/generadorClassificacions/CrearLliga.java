@@ -100,9 +100,9 @@ public class CrearLliga extends JFrame {
 				
 				
 				//Paso les dades al controlador.
-				controlador.setEquipsLliga(equipsLliga);
-				
-				
+				controlador.setEquipsLliga(equipsLliga);				
+				controlador.carregarDadesTaula();
+				finestraClassificacions.setNomLliga(controlador.obtenirNomLliga());
 				CrearLliga.this.setVisible(false);
 				}else{
 					System.out.println("No s'han especificat prous dades!");
