@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
@@ -41,6 +42,8 @@ public class FinestraClassificacions extends JFrame {
 	String nomLliga = controlador.obtenirNomLliga();
 	private JTable table;
 	JLabel infoBox = new JLabel("");
+	TitledBorder border = null;
+	
 
 	/**
 	 * Launch the application.
@@ -86,6 +89,37 @@ public class FinestraClassificacions extends JFrame {
 		mnFitxer.add(separator);
 
 		JMenuItem mntmObrirLliga = new JMenuItem("Obrir Lliga");
+		mntmObrirLliga.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.showOpenDialog(FinestraClassificacions.this);
+					File entrada = fileChooser.getSelectedFile();
+
+					if (entrada != null) {
+						
+						if(controlador.validarXMLambXSD(entrada)){
+
+						System.out.println(controlador.getEstadisticaEquip().toString());
+						Lliga lligaFutbol = controlador.recuperarLligaXML(entrada);
+						System.out.println(controlador.getEstadisticaEquip().toString());
+						controlador.setEstadisticaEquip(lligaFutbol.classificacio);
+						
+						controlador.setNomLliga(lligaFutbol.nomLliga);
+						controlador.carregarDadesTaula();
+						nomLliga = lligaFutbol.nomLliga;
+						border.setTitle(nomLliga);
+						FinestraClassificacions.this.infoBox.setText("Lliga oberta correctament.");
+						esperarIborrar(2000);
+						
+					}else{
+						infoBox.setText("Aquest XML no es vàlid!");
+						esperarIborrar(2000);
+					}
+					}
+				
+			}
+		});
 		mnFitxer.add(mntmObrirLliga);
 
 		JMenuItem mntmDesarLliga = new JMenuItem("Desar Lliga");
@@ -132,7 +166,7 @@ public class FinestraClassificacions extends JFrame {
 		contentPane.setLayout(new MigLayout("", "[426px][]", "[229px][][][]"));
 
 		JPanel tableContainer = new JPanel();
-		tableContainer.setBorder(new TitledBorder(null, nomLliga,
+		tableContainer.setBorder(border = new TitledBorder(null, nomLliga,
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		contentPane.add(tableContainer, "cell 0 0,grow");
 		tableContainer.setLayout(new MigLayout("", "[404px,grow]",

@@ -1,5 +1,9 @@
 package net.josegarvin.generadorClassificacions;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,6 +13,13 @@ import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.xml.XMLConstants;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+
+import org.xml.sax.SAXException;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -17,11 +28,15 @@ public class Controlador {
 	ArrayList<String> equipsLliga = new ArrayList<String>();;
 	ArrayList<EstadisticaEquip> estadisticaEquip = new ArrayList<EstadisticaEquip>();
 	DefaultTableModel estadisticaEquipModel = new DefaultTableModel();
+	String nomLliga ="";
 	String[] capsaleres = { "Nom equip", "Victories", "Empats", "Derrotes",
 			"Punts" };
+	XStream xstream = new XStream();
+	
 
 	public Controlador() {
-
+		xstream.alias("lliga", Lliga.class);
+		xstream.alias("equip", EstadisticaEquip.class);
 	}
 
 	public ArrayList<String> getEquipsLliga() {
@@ -32,14 +47,23 @@ public class Controlador {
 		this.equipsLliga = equipsLliga;
 	}
 
+	
+	public ArrayList<EstadisticaEquip> getEstadisticaEquip() {
+		return estadisticaEquip;
+	}
+
+	public void setEstadisticaEquip(ArrayList<EstadisticaEquip> estadisticaEquip) {
+		this.estadisticaEquip = estadisticaEquip;
+	}
+
 	public void carregarEquips(JComboBox<String> comboEquips) {
-		for (int i = 1; i < equipsLliga.size(); i++) {
-			comboEquips.addItem(equipsLliga.get(i));
+		for (int i = 0; i < estadisticaEquip.size(); i++) {
+			comboEquips.addItem(estadisticaEquip.get(i).getNomEquip());
 		}
 	}
 
 	public void generarEstadisticaEquips() {
-
+		estadisticaEquip = new ArrayList<EstadisticaEquip>();
 		for (int i = 1; i < equipsLliga.size(); i++) {
 			estadisticaEquip.add(new EstadisticaEquip(equipsLliga.get(i)));
 		}
@@ -116,13 +140,13 @@ public class Controlador {
 		if (resultat1 > resultat2) {
 			equipA1.setGuanyats(equipA1.getGuanyats() + 1);
 			equipA2.setPerduts(equipA2.getPerduts() + 1);
-			assignarPunts(equip1, 2);
+			assignarPunts(equip1, 3);
 		}
 
 		if (resultat2 > resultat1) {
 			equipA2.setGuanyats(equipA2.getGuanyats() + 1);
 			equipA1.setPerduts(equipA1.getPerduts() + 1);
-			assignarPunts(equip2, 2);
+			assignarPunts(equip2, 3);
 		}
 
 		carregarDadesTaula();
@@ -154,10 +178,10 @@ public class Controlador {
 	}
 
 	public String obtenirNomLliga() {
-		if (equipsLliga.size() == 0) {
+		if (nomLliga.equals("")) {
 			return "Carrega o crea una lliga i gaudeix del programa";
 		} else {
-			return equipsLliga.get(0);
+			return nomLliga;
 		}
 	}
 
@@ -176,10 +200,9 @@ public class Controlador {
 		
 		Lliga lligaFutbol = new Lliga(obtenirNomLliga(), estadisticaEquip);
 		
-		XStream xstream = new XStream();
 		
-		xstream.alias("lliga", Lliga.class);
-		xstream.alias("equip", EstadisticaEquip.class);
+		
+		
 		String xml = xstream.toXML(lligaFutbol);
 		System.out.println("La lliga en XML té el següent aspecte:");
 		System.out.println("----------------------------");
@@ -187,5 +210,50 @@ public class Controlador {
 		System.out.println("----------------------------");
 		return xml;
 	}
+
+	public Lliga recuperarLligaXML(File entrada) {
+		try{
+			Lliga n = (Lliga)xstream.fromXML(new FileInputStream(entrada));
+			Lliga lligaFutbol = (Lliga)xstream.fromXML(new FileReader(entrada.getAbsoluteFile()));
+			this.nomLliga = lligaFutbol.nomLliga;
+			return n;
+			
+		}catch(Exception e){
+			System.out.println(e);
+			return null;
+		}
+	}
+	
+	public boolean validarXMLambXSD(File xml){
+		
+            
+            Schema schema;
+			try {
+				SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+				schema = factory.newSchema(new File("/home/b4tm4n/lliga/lliga.xsd"));
+				Validator validator = schema.newValidator();
+	            validator.validate(new StreamSource(xml));
+	            return true;
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				return false;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return false;
+       
+        
+	}
+
+	public String getNomLliga() {
+		return nomLliga;
+	}
+
+	public void setNomLliga(String nomLliga) {
+		this.nomLliga = nomLliga;
+	}
+	
+	
 
 }

@@ -100,7 +100,8 @@ public class CrearLliga extends JFrame {
 				
 				
 				//Paso les dades al controlador.
-				controlador.setEquipsLliga(equipsLliga);				
+				controlador.setEquipsLliga(equipsLliga);
+				controlador.generarEstadisticaEquips();
 				controlador.carregarDadesTaula();
 				finestraClassificacions.setNomLliga(controlador.obtenirNomLliga());
 				CrearLliga.this.setVisible(false);
