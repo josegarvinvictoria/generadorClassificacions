@@ -7,6 +7,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.Timer;
 
@@ -16,13 +17,11 @@ import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
@@ -37,13 +36,13 @@ public class FinestraClassificacions extends JFrame {
 
 	CrearLliga finestraCrearLliga;
 	PartitNou finestraPartitNou;
+	File rutaLligaActual;
 
 	Controlador controlador = new Controlador();
 	String nomLliga = controlador.obtenirNomLliga();
 	private JTable table;
 	JLabel infoBox = new JLabel("");
 	TitledBorder border = null;
-	
 
 	/**
 	 * Launch the application.
@@ -67,7 +66,7 @@ public class FinestraClassificacions extends JFrame {
 		setLocationRelativeTo(null);
 		setTitle("Classificacions");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 314);
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -91,33 +90,71 @@ public class FinestraClassificacions extends JFrame {
 		JMenuItem mntmObrirLliga = new JMenuItem("Obrir Lliga");
 		mntmObrirLliga.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				int seleccio = -1;
+
+				//Si el model conté dades.
+				if (controlador.getEstadisticaEquipModel().getRowCount() != 0) {
+
+					seleccio = JOptionPane
+							.showConfirmDialog(FinestraClassificacions.this,
+									"Actualment hi ha una lliga oberta. Vols desar els canvis realitzats?");
+
+					//Si l'usuari escull "Yes".
+					if (seleccio == 0) {
+						System.out.println("Vol desar la lliga actual!");
+						String xml = controlador.generarXML();
+						FileWriter fw;
+						try {
+							fw = new FileWriter(rutaLligaActual);
+							fw.write(xml);
+							fw.close();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+
+					}
+
+				}
 				
-					JFileChooser fileChooser = new JFileChooser();
-					fileChooser.showOpenDialog(FinestraClassificacions.this);
-					File entrada = fileChooser.getSelectedFile();
+				if(seleccio == 0 || seleccio == 1 || seleccio == -1){
+					
+				
+				
+				
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.showOpenDialog(FinestraClassificacions.this);
+				File entrada = fileChooser.getSelectedFile();
+				rutaLligaActual = entrada;
 
-					if (entrada != null) {
-						
-						if(controlador.validarXMLambXSD(entrada)){
+				if (entrada != null) {
 
-						System.out.println(controlador.getEstadisticaEquip().toString());
-						Lliga lligaFutbol = controlador.recuperarLligaXML(entrada);
-						System.out.println(controlador.getEstadisticaEquip().toString());
-						controlador.setEstadisticaEquip(lligaFutbol.classificacio);
-						
+					if (controlador.validarXMLambXSD(entrada)) {
+
+						System.out.println(controlador.getEstadisticaEquip()
+								.toString());
+						Lliga lligaFutbol = controlador
+								.recuperarLligaXML(entrada);
+						System.out.println(controlador.getEstadisticaEquip()
+								.toString());
+						controlador
+								.setEstadisticaEquip(lligaFutbol.classificacio);
+
 						controlador.setNomLliga(lligaFutbol.nomLliga);
 						controlador.carregarDadesTaula();
 						nomLliga = lligaFutbol.nomLliga;
 						border.setTitle(nomLliga);
-						FinestraClassificacions.this.infoBox.setText("Lliga oberta correctament.");
+						FinestraClassificacions.this.infoBox
+								.setText("Lliga oberta correctament.");
 						esperarIborrar(2000);
-						
-					}else{
+
+					} else {
 						infoBox.setText("Aquest XML no es vàlid!");
 						esperarIborrar(2000);
 					}
-					}
-				
+				}
+				}
 			}
 		});
 		mnFitxer.add(mntmObrirLliga);
@@ -137,13 +174,15 @@ public class FinestraClassificacions extends JFrame {
 						FileWriter fw = new FileWriter(sortida + ".xml");
 						fw.write(xml);
 						fw.close();
-						FinestraClassificacions.this.infoBox.setText("Lliga desada correctament.");
+						FinestraClassificacions.this.infoBox
+								.setText("Lliga desada correctament.");
 						esperarIborrar(2000);
 					}
 
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
-					FinestraClassificacions.this.infoBox.setText("No s'ha pogut desar la lliga.");
+					FinestraClassificacions.this.infoBox
+							.setText("No s'ha pogut desar la lliga.");
 				}
 
 			}
@@ -187,12 +226,11 @@ public class FinestraClassificacions extends JFrame {
 			}
 		});
 		contentPane.add(btnEntrarUnaNova, "flowx,cell 0 2");
-		
+
 		JPanel panel = new JPanel();
 		contentPane.add(panel, "cell 0 2,alignx center,aligny center");
 		panel.setLayout(new MigLayout("", "[180px]", "[8px]"));
-		
-		
+
 		panel.add(infoBox, "cell 0 0,alignx left,aligny top");
 		controlador.generarCapsaleres();
 	}
@@ -205,7 +243,6 @@ public class FinestraClassificacions extends JFrame {
 		this.nomLliga = nomLliga;
 	}
 
-	
 	public final void esperarIborrar(final int milisegons) {
 		Timer timer = new Timer(milisegons, new ActionListener() {
 
@@ -216,5 +253,5 @@ public class FinestraClassificacions extends JFrame {
 		timer.start();
 		timer.setRepeats(false);
 	}
-	
+
 }
