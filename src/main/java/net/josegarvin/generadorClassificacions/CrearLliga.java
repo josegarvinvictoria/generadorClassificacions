@@ -11,9 +11,12 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.SwingUtilities;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 public class CrearLliga extends JFrame {
@@ -25,6 +28,7 @@ public class CrearLliga extends JFrame {
 	private JPanel contentPane;
 	private JTextField nomLliga;
 	private JTextField nouEquip;
+	JLabel infoBox;
 	private ArrayList<String> equipsLliga = new ArrayList<String>();
 	DefaultListModel<String> listModel;
 	JList<String> list;
@@ -32,16 +36,62 @@ public class CrearLliga extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CrearLliga(final Controlador controlador, final FinestraClassificacions finestraClassificacions) {
+	public CrearLliga(final Controlador controlador) {
 		setLocationRelativeTo(null);
+		this.setResizable(false);
 		setTitle("Crear una lliga");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 312);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
+		this.addWindowListener( new WindowListener() {
+			
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void windowClosing(WindowEvent e) {
+				System.out.println("Tanca!!!!!!");
+				
+				CrearLliga.this.obtenirIMostrarFinestraPare();
+				
+			}
+			
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		
+
+		    });
+		
+		
+		
+		
 		final JLabel labelNomLliga = new JLabel("Nom de la lliga: ");
 		labelNomLliga.setBounds(11, 13, 113, 15);
 		contentPane.add(labelNomLliga);
@@ -62,7 +112,7 @@ public class CrearLliga extends JFrame {
 		nouEquip.setColumns(10);
 
 		JButton btnAfegir = new JButton("Afegir");
-		btnAfegir.setBounds(11, 174, 117, 25);
+		btnAfegir.setBounds(11, 168, 117, 25);
 		btnAfegir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				afegirEquip();
@@ -81,7 +131,7 @@ public class CrearLliga extends JFrame {
 				}
 			}
 		});
-		btnTreure.setBounds(11, 205, 117, 25);
+		btnTreure.setBounds(11, 199, 117, 25);
 		contentPane.add(btnTreure);
 		contentPane.add(list);
 		JButton btnSortir = new JButton("Crear");
@@ -90,7 +140,7 @@ public class CrearLliga extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//Si hi ha algun equip a la llista i a més hi ha
 				//un nom de lliga.
-				boolean dadesOk = listModel.size() != 0 && !labelNomLliga.getText().equals("");
+				boolean dadesOk = listModel.size() != 0 && !nomLliga.getText().equals("");
 				
 				if(dadesOk){
 					equipsLliga.add(nomLliga.getText());
@@ -103,16 +153,26 @@ public class CrearLliga extends JFrame {
 				controlador.setEquipsLliga(equipsLliga);
 				controlador.generarEstadisticaEquips();
 				controlador.carregarDadesTaula();
-				finestraClassificacions.setNomLliga(controlador.obtenirNomLliga());
+				
+				
+				//Oculto la finestra
 				CrearLliga.this.setVisible(false);
+				
+				FinestraClassificacions finestraPrincipal = new FinestraClassificacions(controlador);
+				finestraPrincipal.border.setTitle(nomLliga.getText());
+				finestraPrincipal.setVisible(true);
 				}else{
-					System.out.println("No s'han especificat prous dades!");
+					infoBox.setText("No hi ha prous dades!");
 				}
 				
 				System.out.println(equipsLliga.toString());
 			}
 		});
 		contentPane.add(btnSortir);	
+		
+		infoBox = new JLabel("");
+		infoBox.setBounds(11, 226, 229, 25);
+		contentPane.add(infoBox);
 	}
 	
 	
@@ -124,5 +184,13 @@ public class CrearLliga extends JFrame {
 		System.out.println(listModel);
 	}
 	
+	public String getnomLliga(){
+		return nomLliga.getText();
+	}
 	
+	public void obtenirIMostrarFinestraPare(){
+		FinestraClassificacions topFrame = (FinestraClassificacions) SwingUtilities.getWindowAncestor(this);
+		
+		topFrame.setVisible(true);
+	}
 }

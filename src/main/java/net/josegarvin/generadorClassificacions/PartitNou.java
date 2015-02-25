@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import java.awt.Font;
 
 public class PartitNou extends JFrame {
 
@@ -28,15 +29,18 @@ public class PartitNou extends JFrame {
 	 * Create the frame.
 	 */
 	public PartitNou(final Controlador controlador) {
+		setLocationRelativeTo(null);
+		this.setResizable(false);
 		setTitle("Partit nou");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 328, 184);
+		setBounds(100, 100, 398, 184);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new MigLayout("", "[15.00][113.00,grow][3.00][grow][13.00]", "[][][4.00][][42.00]"));
 		
 		infoBox = new JLabel("Especifica els equips i els resultats:");
+		infoBox.setFont(new Font("Dialog", Font.BOLD, 12));
 		infoBox.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(infoBox, "cell 1 0 3 1");
 		
@@ -57,15 +61,20 @@ public class PartitNou extends JFrame {
 		btnAcceptar = new JButton("Acceptar");
 		btnAcceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				infoBox.setText("");
 				String equip1 = llistatEquips1.getSelectedItem().toString();
 				String equip2 = llistatEquips2.getSelectedItem().toString();
-				int resultatE1 = Integer.parseInt(resultat1.getText());
-				int resultatE2 = Integer.parseInt(resultat2.getText());
+				String resultatE1 = resultat1.getText();
+				String resultatE2 =resultat2.getText();
 				
 				if(equip1.equals(equip2)){
 					infoBox.setText("Revisa els equips escollits!");
+				}else if(!isNumeric(resultatE1) || !isNumeric(resultatE2)){
+					infoBox.setText("Cal que el resultat sigui un numero enter!");
+					
 				}else{
-					controlador.calcularPunts(equip1, resultatE1, equip2, resultatE2);
+					controlador.calcularPunts(equip1, Integer.parseInt(resultatE1), equip2, Integer.parseInt(resultatE2));
+					controlador.setHiHaCanvis(true);
 				}
 				
 			}
@@ -83,5 +92,14 @@ public class PartitNou extends JFrame {
 		controlador.carregarEquips(llistatEquips1);
 		controlador.carregarEquips(llistatEquips2);
 		
+	}
+	
+	private static boolean isNumeric(String cadena){
+		try {
+			Integer.parseInt(cadena);
+			return true;
+		} catch (NumberFormatException nfe){
+			return false;
+		}
 	}
 }

@@ -9,10 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import javax.swing.JComboBox;
-import javax.swing.JList;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
@@ -32,6 +29,7 @@ public class Controlador {
 	String[] capsaleres = { "Nom equip", "Victories", "Empats", "Derrotes",
 			"Punts" };
 	XStream xstream = new XStream();
+	boolean hiHaCanvis = false;
 	
 
 	public Controlador() {
@@ -245,15 +243,27 @@ public class Controlador {
        
         
 	}
-
-	public String getNomLliga() {
-		return nomLliga;
-	}
-
-	public void setNomLliga(String nomLliga) {
-		this.nomLliga = nomLliga;
+	
+	public boolean hiHaDadesCarregades(){
+		
+		if(this.getEstadisticaEquipModel().getRowCount() != 0){
+			return true;
+		}
+		return false;
 	}
 	
-	
+	public void renicialitzarModel(){
+		this.estadisticaEquipModel = new DefaultTableModel();
+	}
 
+	public boolean isHiHaCanvis() {
+		return hiHaCanvis;
+	}
+
+	public void setHiHaCanvis(boolean hiHaCanvis) {
+		this.hiHaCanvis = hiHaCanvis;
+	}
+
+	
+	
 }

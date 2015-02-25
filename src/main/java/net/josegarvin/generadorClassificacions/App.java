@@ -8,7 +8,8 @@ public class App
 {
     public static void main( String[] args )
     {
-        FinestraClassificacions finestra = new FinestraClassificacions();
+    	Controlador controlador = new Controlador();
+        FinestraClassificacions finestra = new FinestraClassificacions(controlador);
         finestra.setVisible(true);
         
         
