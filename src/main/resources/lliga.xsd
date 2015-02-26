@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+   <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+         <!-- XML Schema Generated from XML Document on Wed Feb 18 2015 16:44:47 GMT+0100 (CET) -->
+         <!-- with XmlGrid.net Free Online Service http://xmlgrid.net -->
+         <xs:element name="lliga">
+               <xs:complexType>
+                     <xs:sequence>
+                           <xs:element name="nomLliga" type="xs:string"></xs:element>
+                           <xs:element name="classificacio">
+                                 <xs:complexType>
+                                       <xs:sequence>
+                                             <xs:element name="equip" maxOccurs="unbounded">
+                                                   <xs:complexType>
+                                                         <xs:sequence>
+                                                               <xs:element name="nomEquip" type="xs:string"></xs:element>
+                                                               <xs:element name="guanyats" type="xs:int"></xs:element>
+                                                               <xs:element name="empatats" type="xs:int"></xs:element>
+                                                               <xs:element name="perduts" type="xs:int"></xs:element>
+                                                               <xs:element name="punts" type="xs:int"></xs:element>
+                                                         </xs:sequence>
+                                                   </xs:complexType>
+                                             </xs:element>
+                                       </xs:sequence>
+                                 </xs:complexType>
+                           </xs:element>
+                     </xs:sequence>
+               </xs:complexType>
+         </xs:element>
+   </xs:schema>
+

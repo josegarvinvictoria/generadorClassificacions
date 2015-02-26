@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import javax.swing.JComboBox;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
@@ -30,7 +31,8 @@ public class Controlador {
 			"Punts" };
 	XStream xstream = new XStream();
 	boolean hiHaCanvis = false;
-	
+	FinestraClassificacions finestra;
+
 
 	public Controlador() {
 		xstream.alias("lliga", Lliga.class);
@@ -45,7 +47,7 @@ public class Controlador {
 		this.equipsLliga = equipsLliga;
 	}
 
-	
+
 	public ArrayList<EstadisticaEquip> getEstadisticaEquip() {
 		return estadisticaEquip;
 	}
@@ -195,12 +197,12 @@ public class Controlador {
 	}
 
 	public String generarXML() {
-		
+
 		Lliga lligaFutbol = new Lliga(obtenirNomLliga(), estadisticaEquip);
-		
-		
-		
-		
+
+
+
+
 		String xml = xstream.toXML(lligaFutbol);
 		System.out.println("La lliga en XML té el següent aspecte:");
 		System.out.println("----------------------------");
@@ -215,20 +217,20 @@ public class Controlador {
 			Lliga lligaFutbol = (Lliga)xstream.fromXML(new FileReader(entrada.getAbsoluteFile()));
 			this.nomLliga = lligaFutbol.nomLliga;
 			return n;
-			
+
 		}catch(Exception e){
 			System.out.println(e);
 			return null;
 		}
 	}
-	
+
 	public boolean validarXMLambXSD(File xml){
-		
-            
+
+
             Schema schema;
 			try {
 				SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-				schema = factory.newSchema(new File("/home/b4tm4n/lliga/lliga.xsd"));
+				schema = factory.newSchema(getClass().getResource("/lliga.xsd"));
 				Validator validator = schema.newValidator();
 	            validator.validate(new StreamSource(xml));
 	            return true;
@@ -240,18 +242,19 @@ public class Controlador {
 				System.out.println("Fitxer no trobat!");
 			}
 			return false;
-       
-        
+
+
 	}
-	
+
 	public boolean hiHaDadesCarregades(){
-		
+
 		if(this.getEstadisticaEquipModel().getRowCount() != 0){
 			return true;
 		}
 		return false;
 	}
-	
+
+
 	public void renicialitzarModel(){
 		this.estadisticaEquipModel = new DefaultTableModel();
 	}
@@ -264,6 +267,15 @@ public class Controlador {
 		this.hiHaCanvis = hiHaCanvis;
 	}
 
+	public String getNomLliga() {
+		return nomLliga;
+	}
+
+	public void setNomLliga(String nomLliga) {
+		this.nomLliga = nomLliga;
+	}
+
 	
-	
+
+
 }

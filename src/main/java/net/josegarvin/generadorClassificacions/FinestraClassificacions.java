@@ -31,7 +31,7 @@ import com.sun.glass.events.WindowEvent;
 public class FinestraClassificacions extends JFrame {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -77,14 +77,15 @@ public class FinestraClassificacions extends JFrame {
 		JMenu mnFitxer = new JMenu("Fitxer");
 		menuBar.add(mnFitxer);
 
-		
-		
-		
+
+
+
 		JMenuItem mntmNovaLliga = new JMenuItem("Nova Lliga");
 		mntmNovaLliga.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				int seleccio = -1;
+				finestraCrearLliga = new CrearLliga(controlador);
 
 				// Si el model conté dades.
 				if (controlador.hiHaDadesCarregades() && controlador.isHiHaCanvis()) {
@@ -122,14 +123,23 @@ public class FinestraClassificacions extends JFrame {
 					}
 					// Si l'usuari escull "No".
 					if (seleccio == 1) {
-						FinestraClassificacions.this.setVisible(false);
-						finestraCrearLliga = new CrearLliga(controlador);
+						finestraCrearLliga.setModal(true);
 						finestraCrearLliga.setVisible(true);
+						nomLliga = controlador.getNomLliga();
+						border.setTitle(nomLliga);
+						System.out.print("Hello");
+						
 					}
 				} else {
-					FinestraClassificacions.this.setVisible(false);
-					finestraCrearLliga = new CrearLliga(controlador);
+					//FinestraClassificacions.this.setVisible(false);
+					
+					finestraCrearLliga.setModal(true);
 					finestraCrearLliga.setVisible(true);
+					nomLliga = controlador.getNomLliga();
+					border.setTitle(nomLliga);
+					System.out.print("Hello");
+					
+
 				}
 
 			}
@@ -145,6 +155,9 @@ public class FinestraClassificacions extends JFrame {
 
 				int seleccio = -1;
 
+				System.out.println(controlador.hiHaDadesCarregades());
+				System.out.println(controlador.isHiHaCanvis());
+				
 				// Si el model conté dades.
 				if (controlador.hiHaDadesCarregades() && controlador.isHiHaCanvis()) {
 
@@ -156,13 +169,14 @@ public class FinestraClassificacions extends JFrame {
 						System.out.println("Vol desar la lliga actual!");
 						String xml = controlador.generarXML();
 						FileWriter fw = null;
-						
+
 						if (rutaLligaActual != null) {
-							
+
 							try {
 								fw = new FileWriter(rutaLligaActual);
 								fw.write(xml);
 								fw.close();
+								JOptionPane.showMessageDialog(null, "Lliga desada correctament.");
 							} catch (IOException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -171,6 +185,7 @@ public class FinestraClassificacions extends JFrame {
 							onDesemLesDadesActuals(fw, xml);
 						}
 						controlador.setHiHaCanvis(false);
+						
 					}
 
 				}
@@ -218,9 +233,9 @@ public class FinestraClassificacions extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String xml = controlador.generarXML();
 				FileWriter fw = null;
-				
+
 				if(rutaLligaActual != null){
-				
+
 					try {
 						fw = new FileWriter(rutaLligaActual);
 						fw.write(xml);
@@ -231,11 +246,11 @@ public class FinestraClassificacions extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-				
-				
+
+
 
 			}else{
-				
+
 				try {
 					JFileChooser fileChooser = new JFileChooser();
 					fileChooser.showSaveDialog(FinestraClassificacions.this);
@@ -342,10 +357,8 @@ public class FinestraClassificacions extends JFrame {
 				fw = new FileWriter(sortida + ".xml");
 				fw.write(xml);
 				fw.close();
-				FinestraClassificacions.this.infoBox
-						.setText("Lliga desada correctament.");
 				rutaLligaActual = sortida;
-				esperarIborrar(2000);
+				JOptionPane.showMessageDialog(null, "Lliga desada correctament.");
 			}
 
 		} catch (IOException e1) {
@@ -353,8 +366,11 @@ public class FinestraClassificacions extends JFrame {
 			FinestraClassificacions.this.infoBox
 					.setText("No s'ha pogut desar la lliga.");
 		}
+		
+		 
 
 	}
+
 
 	public final void esperarIborrar(final int milisegons) {
 		Timer timer = new Timer(milisegons, new ActionListener() {
