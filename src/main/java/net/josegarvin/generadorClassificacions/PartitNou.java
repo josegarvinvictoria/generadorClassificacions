@@ -18,6 +18,10 @@ import java.awt.Font;
 
 public class PartitNou extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField resultat1;
 	private JTextField resultat2;

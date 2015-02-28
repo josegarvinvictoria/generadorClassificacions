@@ -26,7 +26,6 @@ import java.io.IOException;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 
-import com.sun.glass.events.WindowEvent;
 
 public class FinestraClassificacions extends JFrame {
 
@@ -116,8 +115,11 @@ public class FinestraClassificacions extends JFrame {
 							// l'indiquem a l'usuari que l'especifiqui
 							// a partir d'un fileChooser.
 						} else {
+							JOptionPane.showMessageDialog(null, "No es coneix cap ruta de sortida per aquesta lliga.\nEspecifica a on vols desar la lliga:");
+
 							onDesemLesDadesActuals(fw, xml);
 						}
+						
 						controlador.setHiHaCanvis(false);
 
 					}
@@ -126,8 +128,10 @@ public class FinestraClassificacions extends JFrame {
 						finestraCrearLliga.setModal(true);
 						finestraCrearLliga.setVisible(true);
 						nomLliga = controlador.getNomLliga();
+						rutaLligaActual = null;
 						border.setTitle(nomLliga);
-						System.out.print("Hello");
+						repaint();
+						
 						
 					}
 				} else {
@@ -136,8 +140,10 @@ public class FinestraClassificacions extends JFrame {
 					finestraCrearLliga.setModal(true);
 					finestraCrearLliga.setVisible(true);
 					nomLliga = controlador.getNomLliga();
+					rutaLligaActual = null;
 					border.setTitle(nomLliga);
-					System.out.print("Hello");
+					repaint();
+					
 					
 
 				}
@@ -182,6 +188,7 @@ public class FinestraClassificacions extends JFrame {
 								e1.printStackTrace();
 							}
 						}else{
+							JOptionPane.showMessageDialog(null, "No es coneix cap ruta de sortida per aquesta lliga.\nEspecifica a on vols desar la lliga:");
 							onDesemLesDadesActuals(fw, xml);
 						}
 						controlador.setHiHaCanvis(false);
@@ -214,6 +221,7 @@ public class FinestraClassificacions extends JFrame {
 							controlador.carregarDadesTaula();
 							nomLliga = lligaFutbol.nomLliga;
 							border.setTitle(nomLliga);
+							repaint();
 							FinestraClassificacions.this.infoBox
 									.setText("Lliga oberta correctament.");
 							esperarIborrar(2000);

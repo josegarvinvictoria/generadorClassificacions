@@ -1,18 +1,31 @@
 package net.josegarvin.generadorClassificacions;
 
 /**
- * Hello world!
+ * Mètode principal del programa "generador de classificacions".
+ *
+ * @author Jose Garvin Victoria
  *
  */
-public class App 
-{
-    public static void main( String[] args )
-    {
-    	Controlador controlador = new Controlador();
-        FinestraClassificacions finestra = new FinestraClassificacions(controlador);
-        finestra.setVisible(true);
-        
-        
-        
-    }
+public final class App {
+
+	/**
+	 * Constructor per defecte de la classe.
+	 */
+	private App() {
+
+	}
+
+	/**
+	 * Mètode principal del programa.
+	 *
+	 * @param args
+	 *            -->.
+	 */
+	public static void main(final String[] args) {
+		Controlador controlador = new Controlador();
+		FinestraClassificacions finestra = new FinestraClassificacions(
+				controlador);
+		finestra.setVisible(true);
+
+	}
 }
