@@ -115,7 +115,6 @@ public class CrearLliga extends JDialog {
 				if (list.getSelectedIndex() != -1) {
 					listModel.remove(
 						list.getSelectedIndex());
-					System.out.println(list.toString());
 				}
 			}
 		});
@@ -155,7 +154,6 @@ public class CrearLliga extends JDialog {
 						"No hi ha prous dades!");
 				}
 
-				System.out.println(equipsLliga.toString());
 				dispose();
 			}
 		});
@@ -174,6 +172,5 @@ public class CrearLliga extends JDialog {
 			listModel.addElement(nouEquip.getText());
 			nouEquip.setText("");
 		}
-		System.out.println(listModel);
 	}
 }

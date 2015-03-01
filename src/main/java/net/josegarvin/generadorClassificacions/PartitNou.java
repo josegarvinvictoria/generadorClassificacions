@@ -68,39 +68,37 @@ public class PartitNou extends JFrame {
 		this.setResizable(false);
 		setTitle("Partit nou");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 398, 184);
+		setBounds(100, 100, 426, 216);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new MigLayout(
-			"", "[15.00][113.00,grow][3.00][grow][13.00]",
-			"[][][4.00][][42.00]"));
-
-		infoBox = new JLabel("Especifica els equips i els resultats:");
-		infoBox.setFont(new Font("Dialog", Font.BOLD, 12));
-		infoBox.setHorizontalAlignment(SwingConstants.CENTER);
-		contentPane.add(infoBox, "cell 1 0 3 1");
+		contentPane.setLayout(new MigLayout("", "[15.00][113.00,grow][3.00][grow][13.00]", "[][][][4.00][][42.00]"));
+		
+				infoBox = new JLabel("Especifica els equips i els resultats:");
+				infoBox.setFont(new Font("Dialog", Font.BOLD, 12));
+				infoBox.setHorizontalAlignment(SwingConstants.CENTER);
+				contentPane.add(infoBox, "cell 1 0 3 1");
 
 		final JComboBox<String> llistatEquips1 =
 			new JComboBox<String>();
-		contentPane.add(llistatEquips1, "cell 1 1,growx");
+		contentPane.add(llistatEquips1, "cell 1 2,growx");
 
 		resultat1 = new JTextField();
-		contentPane.add(resultat1, "cell 3 1,growx");
+		contentPane.add(resultat1, "cell 3 2,growx");
 		resultat1.setColumns(10);
 
 		final JComboBox<String> llistatEquips2 =
 			new JComboBox<String>();
-		contentPane.add(llistatEquips2, "cell 1 3,growx");
+		contentPane.add(llistatEquips2, "cell 1 4,growx");
 
 		resultat2 = new JTextField();
-		contentPane.add(resultat2, "cell 3 3,growx");
+		contentPane.add(resultat2, "cell 3 4,growx");
 		resultat2.setColumns(10);
 
 		btnAcceptar = new JButton("Acceptar");
 		btnAcceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
-				infoBox.setText("");
+				
 
 				String equip1 = llistatEquips1
 					.getSelectedItem().toString();
@@ -122,20 +120,21 @@ public class PartitNou extends JFrame {
 					controlador.calcularPunts(equip1,
 					Integer.parseInt(resultatE1), equip2,
 					Integer.parseInt(resultatE2));
-
+					infoBox.setText("Classificació actualitzada.");
+					btnCancella.setText("He acabat!");
 					controlador.setHiHaCanvis(true);
 				}
 
 			}
 		});
-		contentPane.add(btnAcceptar, "cell 1 4,alignx center");
+		contentPane.add(btnAcceptar, "cell 1 5,alignx center");
 		btnCancella = new JButton("Cancel.la");
 		btnCancella.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				PartitNou.this.setVisible(false);
 			}
 		});
-		contentPane.add(btnCancella, "cell 3 4,alignx center");
+		contentPane.add(btnCancella, "cell 3 5,alignx center");
 
 		controlador.carregarEquips(llistatEquips1);
 		controlador.carregarEquips(llistatEquips2);

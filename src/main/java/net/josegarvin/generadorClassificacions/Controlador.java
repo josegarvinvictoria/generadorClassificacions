@@ -451,7 +451,6 @@ public class Controlador {
 			return false;
 		} catch (IOException e) {
 
-			System.out.println("Fitxer no trobat!");
 		}
 		return false;
 

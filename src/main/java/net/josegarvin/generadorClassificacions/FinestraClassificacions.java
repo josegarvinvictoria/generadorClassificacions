@@ -66,7 +66,7 @@ public class FinestraClassificacions extends JFrame {
 	private JTable table;
 
 	/**
-	 * JLabel utilitzada per mostrar missatges a l'usuari del programa.
+	 * JLabel utilitzat per mostrar missatges a l'usuari del programa.
 	 */
 	private JLabel infoBox = new JLabel("");
 
@@ -78,7 +78,7 @@ public class FinestraClassificacions extends JFrame {
 	private JPanel contentPane;
 
 	/**
-	 * Constructor de objectes "FinestraClassificacions".
+	 * Constructor d'objectes "FinestraClassificacions".
 	 *
 	 * @param controlador Objecte "controlador".
 	 * 				-->
@@ -115,8 +115,6 @@ public class FinestraClassificacions extends JFrame {
 
 					// Si l'usuari escull "Yes".
 					if (seleccio == 0) {
-						System.out.println(
-						"Vol desar la lliga actual!");
 						String xml =
 						controlador.generarXML();
 						FileWriter fw = null;
@@ -205,8 +203,6 @@ public class FinestraClassificacions extends JFrame {
 
 					// Si l'usuari escull "Yes".
 					if (seleccio == 0) {
-						System.out.println("Vol desar"
-							+ " la lliga actual!");
 						String xml =
 						controlador.generarXML();
 						FileWriter fw = null;
@@ -239,7 +235,7 @@ public class FinestraClassificacions extends JFrame {
 							+ "aquesta lliga. "
 							+ "\nEspecifica a "
 							+ "on vols desar la "
-							+ "lliga:");
+							+ "lliga.");
 							onDesemLesDadesActuals(
 								fw, xml);
 						}
@@ -270,20 +266,10 @@ public class FinestraClassificacions extends JFrame {
 							.validarXMLambXSD(
 							entrada)) {
 
-							System.out.println(
-							controlador
-							.getEstadisticaEquip()
-							.toString());
-
 							Lliga lligaFutbol =
 							controlador
 							.recuperarLligaXML(
 							entrada);
-
-							System.out.println(
-							controlador
-							.getEstadisticaEquip()
-							.toString());
 
 							controlador
 							.setEstadisticaEquip(
@@ -489,7 +475,6 @@ public class FinestraClassificacions extends JFrame {
 						+ "oberta. Vols desar els"
 						+ " canvis realitzats?");
 
-		System.out.println("Seleccio-> " + seleccio);
 		return seleccio;
 	}
 
