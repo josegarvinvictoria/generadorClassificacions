@@ -13,22 +13,59 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
+/**
+ * Finestra utilitzada per crear lligues des del programa.
+ * @author Jose Garvin Victoria
+ *
+ */
 public class CrearLliga extends JDialog {
 
 	/**
-	 *
+	 *UID de serialització auto-generat.
 	 */
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTextField nomLliga;
-	private JTextField nouEquip;
-	JLabel infoBox;
-	private ArrayList<String> equipsLliga = new ArrayList<String>();
-	DefaultListModel<String> listModel;
-	JList<String> list;
 
 	/**
-	 * Create the frame.
+	 * Contenidor JPanel del qual penjen tots els elements de la finestra.
+	 */
+	private JPanel contentPane;
+
+	/**
+	 * JTextField on s'especificarà el nom de la lliga a crear.
+	 */
+	private JTextField nomLliga;
+
+	/**
+	 *  JTextField on s'especificaran els noms dels equips que
+	 *  formen la lliga a crear.
+	 */
+	private JTextField nouEquip;
+
+	/**
+	 * JLabel que utilitza el programa per mostrar missatges a l'usuari.
+	 */
+	private JLabel infoBox;
+
+	/**
+	 * ArrayList de "String" on s'emmagatzemen els noms dels equips que
+	 * formen la lliga a crear.
+	 */
+	private ArrayList<String> equipsLliga = new ArrayList<String>();
+
+	/**
+	 * Model del JList de la finestra.
+	 */
+	private DefaultListModel<String> listModel;
+
+	/**
+	 * JList on s'aniran afegint els noms del nous equips.
+	 */
+	private JList<String> list;
+
+	/**
+	 * Constructor de la finestra "CrearLliga".
+	 * @param controlador
+	 * 				--> Objecte "Controlador".
 	 */
 	public CrearLliga(final Controlador controlador) {
 		setLocationRelativeTo(null);
@@ -74,9 +111,10 @@ public class CrearLliga extends JDialog {
 		list.setBounds(134, 42, 303, 188);
 		JButton btnTreure = new JButton("Treure");
 		btnTreure.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(list.getSelectedIndex() != -1){
-					listModel.remove(list.getSelectedIndex());
+			public void actionPerformed(final ActionEvent e) {
+				if (list.getSelectedIndex() != -1) {
+					listModel.remove(
+						list.getSelectedIndex());
 					System.out.println(list.toString());
 				}
 			}
@@ -87,14 +125,15 @@ public class CrearLliga extends JDialog {
 		JButton btnSortir = new JButton("Crear");
 		btnSortir.setBounds(363, 236, 74, 25);
 		btnSortir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				//Si hi ha algun equip a la llista i a més hi ha
 				//un nom de lliga.
-				boolean dadesOk = listModel.size() != 0 && !nomLliga.getText().equals("");
+				boolean dadesOk = listModel.size() != 0
+					&& !nomLliga.getText().equals("");
 
-				if(dadesOk){
+				if (dadesOk) {
 					equipsLliga.add(nomLliga.getText());
-				for(int i = 0; i<listModel.size();i++){
+				for (int i = 0; i < listModel.size(); i++) {
 					equipsLliga.add(listModel.get(i));
 				}
 
@@ -111,8 +150,9 @@ public class CrearLliga extends JDialog {
 				CrearLliga.this.setVisible(false);
 
 
-				}else{
-					infoBox.setText("No hi ha prous dades!");
+				} else {
+					infoBox.setText(
+						"No hi ha prous dades!");
 				}
 
 				System.out.println(equipsLliga.toString());
@@ -126,18 +166,14 @@ public class CrearLliga extends JDialog {
 		contentPane.add(infoBox);
 	}
 
-
-	public void afegirEquip(){
-		if(!nouEquip.getText().equals("")){
+	/**
+	 * Mètode per afegir equips al model de la llista de la finestra.
+	 */
+	public final void afegirEquip() {
+		if (!nouEquip.getText().equals("")) {
 			listModel.addElement(nouEquip.getText());
 			nouEquip.setText("");
 		}
 		System.out.println(listModel);
 	}
-
-	public String getnomLliga(){
-		return nomLliga.getText();
-	}
-
-
 }

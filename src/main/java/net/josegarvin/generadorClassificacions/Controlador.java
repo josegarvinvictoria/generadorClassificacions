@@ -30,6 +30,9 @@ import com.thoughtworks.xstream.XStream;
  */
 public class Controlador {
 
+	/**
+	 * Número de punts a assignar a l'equip guanyador de una jornada.
+	 */
 	private static final int PUNTS_VICTORIA = 3;
 
 	/**
@@ -217,11 +220,11 @@ public class Controlador {
 	private Object[] generarLinia(final EstadisticaEquip equip) {
 		Object[] data = new Object[TAMANY_ARRAY_LINIA];
 
-		data[0] = equip.nomEquip;
-		data[1] = equip.guanyats;
-		data[2] = equip.empatats;
-		data[3] = equip.perduts;
-		data[4] = equip.punts;
+		data[0] = equip.getNomEquip();
+		data[1] = equip.getGuanyats();
+		data[2] = equip.getEmpatats();
+		data[3] = equip.getPerduts();
+		data[4] = equip.getPunts();
 
 		return data;
 	}
@@ -395,16 +398,23 @@ public class Controlador {
 	}
 
 	/**
-	 * Mètode que s'encarrega de 
+	 * Mètode que s'encarrega de recuperar una lliga a partir d'un fitxer
+	 * en format XML prèviament validat per un XSD.
+	 *
 	 * @param entrada
-	 * @return
+	 * 			--> Fitxer XML des del qual es recuperara la
+	 * 				lliga.
+	 * @return --> Retorna un objecte de tipus "Lliga" generat a partir
+	 * 			   des del fitxer XML.
 	 */
-	public Lliga recuperarLligaXML(File entrada) {
+	public final Lliga recuperarLligaXML(final File entrada) {
 		try {
-			Lliga n = (Lliga) xstream.fromXML(new FileInputStream(entrada));
-			Lliga lligaFutbol = (Lliga) xstream.fromXML(new FileReader(entrada
+			Lliga n = (Lliga) xstream.fromXML(
+					new FileInputStream(entrada));
+			Lliga lligaFutbol = (Lliga) xstream.fromXML(
+					new FileReader(entrada
 					.getAbsoluteFile()));
-			this.nomLliga = lligaFutbol.nomLliga;
+			this.nomLliga = lligaFutbol.getNomLliga();
 			return n;
 
 		} catch (Exception e) {
@@ -413,28 +423,49 @@ public class Controlador {
 		}
 	}
 
-	public boolean validarXMLambXSD(File xml) {
+	/**
+	 * Mètode que s'encarrega de validar un fitxer XML a partir
+	 * d'un fitxer XSD.
+	 *
+	 * @param xml --> Objecte de tipus "File" corresponent al fitxer
+	 * 				a validar.
+	 * @return --> Retorna un boolea. "True" si el fitxer s'ha validat
+	 * 				correctament, "False" si no
+	 * 				s'ha pogut validar el fitxer.
+	 */
+	public final boolean validarXMLambXSD(final File xml) {
 
 		Schema schema;
 		try {
 			SchemaFactory factory = SchemaFactory
-					.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			schema = factory.newSchema(getClass().getResource("/lliga.xsd"));
+					.newInstance(
+							XMLConstants
+							.W3C_XML_SCHEMA_NS_URI);
+			schema = factory.newSchema(getClass().
+					getResource("/lliga.xsd"));
 			Validator validator = schema.newValidator();
 			validator.validate(new StreamSource(xml));
 			return true;
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
+
 			return false;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			System.out.println("Fitxer no trobat!");
 		}
 		return false;
 
 	}
 
-	public boolean hiHaDadesCarregades() {
+	/**
+	 * Mètode per determinar si hi ha dades carregades al model
+	 * de la taula principal del programa.
+	 *
+	 * @return
+	 * 		--> Retorna "True" si hi ha dades carregades. "False" si
+	 * 			no hi ha dades carregades.
+	 */
+	public final boolean hiHaDadesCarregades() {
 
 		if (this.getEstadisticaEquipModel().getRowCount() != 0) {
 			return true;
@@ -442,24 +473,51 @@ public class Controlador {
 		return false;
 	}
 
-	public void renicialitzarModel() {
+	/**
+	 * Mètode per reinicialitzar al model de la taula principal
+	 * del programa.
+	 */
+	public final void renicialitzarModel() {
 		this.estadisticaEquipModel = new DefaultTableModel();
 	}
 
-	public boolean isHiHaCanvis() {
+	/**
+	 * Mètode per obtenir el valor de la variable "boolean"
+	 * hiHaCanvis.
+	 *
+	 * @return
+	 * 		--> Retorna el valor de la variable hiHaCanvis.
+	 */
+	public final boolean isHiHaCanvis() {
 		return hiHaCanvis;
 	}
 
-	public void setHiHaCanvis(boolean hiHaCanvis) {
-		this.hiHaCanvis = hiHaCanvis;
+	/**
+	 * Mètode per assignar un valor a la variable de tipus "boolean"
+	 * hiHaCanvis.
+	 *
+	 * @param hiHaCanvisA --> Valor a assignar.
+	 */
+	public final void setHiHaCanvis(final boolean hiHaCanvisA) {
+		this.hiHaCanvis = hiHaCanvisA;
 	}
 
-	public String getNomLliga() {
+	/**
+	 * Mètode per obtenir el valor de la variable nomLliga.
+	 * @return
+	 * 		--> Retorna el valor de la variable nomLliga.
+	 */
+	public final String getNomLliga() {
 		return nomLliga;
 	}
 
-	public void setNomLliga(String nomLliga) {
-		this.nomLliga = nomLliga;
+	/**
+	 * Mètode per assignar valor a la variable nomLliga.
+	 * @param nomLligaA
+	 * 				--> Nom de la lliga.
+	 */
+	public final void setNomLliga(final String nomLligaA) {
+		this.nomLliga = nomLligaA;
 	}
 
 }
